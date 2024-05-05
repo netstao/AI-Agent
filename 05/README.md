@@ -1,0 +1,40 @@
+# AIGC产业拆解
+- 上游
+    - 算力基础
+        - 英伟达
+        - AMD
+        - 浪潮
+        - 华为
+        - 各种云
+        - 芯片
+    - 数据基础
+        - 向量数据库
+        - 数据集 公共数据 私有数据
+    - 算法基础
+        - AI算法框架
+            - TensorFlow
+            - PyTorch
+            - Keras
+            - 飞浆 
+- 中游
+    - 通用模型
+    - 开源社区
+        - Hugging Face
+        - 飞浆
+    - AIGC工具
+        - AutoGPT
+        - LanChain
+- 下游
+    - 内容消费
+    - 企业服务
+        - 金融
+        - 零售
+# 常见名称
+- 多模态
+- token
+- HuggingFace
+- 生成式对抗网络
+- CNN
+- RNN
+- NLP
+- Copilot
