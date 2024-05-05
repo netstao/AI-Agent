@@ -1,0 +1,27 @@
+# 国内外主要LLM特点
+- GoogleT5
+    - 英文底模 开源
+- GPT-3
+    - 
+- GML130B
+- LLaMa
+- GPT-4
+- Falcon
+- GPT-4v
+- 百川智能
+    - 70亿 开源 可商用
+- 文心一言
+    - 2600亿 中文语料85%
+- 通义千问
+    - 总体相当于GTP-3 2023
+- CharGLM6M
+    - 10B以下最强中文开源
+- 腾讯混元
+    - 超千亿
+- MOSS
+    - 160亿 多插件开源
+- Aquila
+    - 首个中文数据合规 70亿-330亿
+- PolyLM
+    - 对亚洲语种友好 2023
+# https://huggingface.co/models
