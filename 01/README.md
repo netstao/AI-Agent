@@ -1,0 +1,26 @@
+# AI-Agent 能做什么
+- AI协调工作
+- 自我迭代学习
+- 软件开发
+## 行业领域
+- 客服服务
+- 健康管理
+- 私人助理
+- 财务管理
+- 数据可视化
+## 框架
+- autoGPT
+- LLM
+- LangChain
+## AIGC与AI应用
+- 大模型基础认知
+- AI应用基本知识
+- 产业与职业机会
+## LangChain
+- ModelIO
+- Chains
+- Prompts
+- Memory
+- RAG与文档
+- LECL
+- Agents
