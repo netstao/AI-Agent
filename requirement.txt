@@ -7,3 +7,4 @@ jinja2
 tiktoken
 chromadb
 faiss-cpu
+anthropic
