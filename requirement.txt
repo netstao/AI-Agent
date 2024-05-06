@@ -4,3 +4,6 @@ openai
 langchain-community
 python-dotenv
 jinja2
+tiktoken
+chromadb
+faiss-cpu
