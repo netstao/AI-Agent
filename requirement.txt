@@ -8,3 +8,6 @@ tiktoken
 chromadb
 faiss-cpu
 anthropic
+unstructured[xlsx]
+pdfminer.six
+pypdf
