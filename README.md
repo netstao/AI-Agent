@@ -5,6 +5,6 @@ AI框架Langchain与LLM开发AI Agent智能应用
 
 
 # Chain
-- [SimpleSequentialChain](chapter5/03Chain.ipynb)
-- [SequentialChain](chapter5/03Chain.ipynb)
+- [SimpleSequentialChain](Chapter5/03Chain.ipynb)
+- [SequentialChain](Chapter5/03Chain.ipynb)
 - RouterChain
