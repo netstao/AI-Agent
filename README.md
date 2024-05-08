@@ -4,7 +4,7 @@ AI框架Langchain与LLM开发AI Agent智能应用
 # Prompt
 
 
-# Chain
+# Chain 各种链
 - [SimpleSequentialChain](Chapter5/03Chain.ipynb)
 - [SequentialChain](Chapter5/03Chain.ipynb)
-- RouterChain
+- [RouterChain](Chapter5/05RouterChain.ipynb)
