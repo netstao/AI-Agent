@@ -12,3 +12,4 @@ unstructured[xlsx]
 pdfminer.six
 pypdf
 doctran
+numexpr
