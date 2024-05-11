@@ -13,3 +13,5 @@ pdfminer.six
 pypdf
 doctran
 numexpr
+scikit-image
+google-search-results
