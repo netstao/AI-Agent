@@ -1,0 +1,8 @@
+fastapi
+langchain_core
+langchain_openai
+langchain_community
+langchain
+redis
+qdrant_client
+uvicorn

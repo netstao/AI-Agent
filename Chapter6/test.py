@@ -1,10 +1,15 @@
-from langchain_community.tools import ElevenLabsText2SpeechTool
+from openai import OpenAI
+from dotenv import load_dotenv
+# Load environment variables from openai.env file
+load_dotenv()
+client = OpenAI(api_key="sk-b1bc99f27b4641d2a32801cd3feaae53", base_url="https://api.deepseek.com/v1")
 
-text_to_speak = "Hello! 你好! Hola! नमस्ते! Bonjour! こんにちは! مرحبا! 안녕하세요! Ciao! Cześć! Привіт! வணக்கம்!"
-
-tts = ElevenLabsText2SpeechTool(
-    voice="Bella",
-    text_to_speak=text_to_speak,
-    verbose=True
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant"},
+        {"role": "user", "content": "给我小孩讲个睡前故事"},
+    ]
 )
-tts.name
+
+print(response.choices[0].message.content)
