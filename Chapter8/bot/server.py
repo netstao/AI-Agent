@@ -13,24 +13,26 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_community.utilities import SerpAPIWrapper
+from langchain_openai import OpenAIEmbeddings
 
 import os
 import asyncio
 import uuid
 from langchain_community.vectorstores import Qdrant
 from qdrant_client import QdrantClient
-# from Mytools import *
+from Btools import *
 import os
 from dotenv import load_dotenv
 # Load environment variables from openai.env file
 load_dotenv()
 
-app = FastAPI()
+from urllib.parse import quote
+password = os.getenv('REDIS_PASSWD')
+encoded_password = quote(password, safe="")
+REDIS_URL = 'redis://:{}@192.168.3.16:6380/0'.format(encoded_password)
 
-@tool
-def test():
-    """test"""
-    return "test"
+app = FastAPI()
 
 
 class Master:
@@ -124,15 +126,55 @@ class Master:
                 ("placeholder", "{agent_scratchpad}"),
             ]
         )
-        self.memory = ""
-        tools = [test]
+        tools = [search,get_info_from_local_db,bazi_cesuan,yaoyigua,jiemeng]
         agent = create_tool_calling_agent(llm=self.chatModel, tools=tools, prompt=self.prompt,)
         # agent  = create_openai_tools_agent(
         #     self.chatModel,
         #     tools=[],
         #     prompt=self.prompt,
         # )
-        self.agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+        self.memory = self.get_memory()
+        self.memory = ConversationTokenBufferMemory(
+            llm = self.chatModel,
+            human_prefix="用户",
+            ai_prefix="陈大师",
+            memory_key=self.MEMORY_KEY,
+            output_key="output",
+            return_messages=True,
+            max_token_limit=1000,
+        chat_memory=self.memory,
+        )
+        self.agent_executor = AgentExecutor(
+            agent=agent,
+            tools=tools,
+            memory=self.memory,
+            verbose=True
+        )
+    
+    def get_memory(self):
+        chat_message_history = RedisChatMessageHistory(
+            url=REDIS_URL,session_id="session" # uid
+        )
+        #chat_message_history.clear()#清空历史记录
+        print("chat_message_history:",chat_message_history.messages)
+        store_message = chat_message_history.messages
+        if len(store_message) > 10:
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    (
+                        "system",
+                        self.SYSTEMPL+"\n这是一段你和用户的对话记忆，对其进行总结摘要，摘要使用第一人称‘我’，并且提取其中的用户关键信息，如姓名、年龄、性别、出生日期等。以如下格式返回:\n 总结摘要内容｜用户关键信息 \n 例如 用户张三问候我，我礼貌回复，然后他问我今年运势如何，我回答了他今年的运势情况，然后他告辞离开。｜张三,生日1999年1月1日"
+                    ),
+                    ("user","{input}"),
+                ]
+            )
+            chain = prompt | self.chatModel 
+            summary = chain.invoke({"input":store_message,"who_you_are":self.MOODS[self.QingXu]["roleSet"]})
+            print("summary:",summary)
+            chat_message_history.clear()
+            chat_message_history.add_message(summary)
+            print("总结后：",chat_message_history.messages)
+        return chat_message_history
     
     def run(self, query):
         qingxu = self.qingxu_chain(query)
@@ -157,19 +199,65 @@ class Master:
         print("情绪判断结果:", result)
         return result
     
+    def background_voice_synthesis(self,text:str,uid:str):
+        #这个函数不需要返回值，只是触发了语音合成
+        asyncio.run(self.get_voice(text,uid))
+    
+    async def get_voice(self,text:str,uid:str):
+        print("text2speech",text)
+        print("uid:",uid)
+        #这里是使用微软TTS的代码
+        msseky = os.getenv("AZURE_TTS_API_KEY")
+        headers = {
+            "Ocp-Apim-Subscription-Key": msseky,
+            "Content-Type": "application/ssml+xml",
+            "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3",
+            "User-Agent": "Tomie's Bot"
+        }
+        print("当前陈大师应该的语气是：",self.QingXu)
+        body =f"""<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang='zh-CN'>
+            <voice name='zh-CN-YunzeNeural'>
+                <mstts:express-as style="{self.MOODS.get(str(self.QingXu),{"voiceStyle":"default"})["voiceStyle"]}" role="SeniorMale">{text}</mstts:express-as>
+            </voice>
+        </speak>"""
+        #发送请求
+        response = requests.post("https://southeastasia.tts.speech.microsoft.com/cognitiveservices/v1",headers=headers,data=body.encode("utf-8"))
+        print("response:",response)
+        if response.status_code == 200:
+            with open(f"{uid}.mp3","wb") as f:
+                f.write(response.content)
+    
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
 
 @app.post("/chat")
-def chat(query:str):
+def chat(query:str, background_tasks: BackgroundTasks):
     master = Master()
-    return master.run(query)
+    msg = master.run(query)
+    uni_uid = str(uuid.uuid4()) # 生成唯一标识
+    background_tasks.add_task(master.background_voice_synthesis,msg['output'], uni_uid)
+    return {"msg": msg, "id": uni_uid}
 
 @app.post("/add_urls")
-def add_urls():
-    return {"Hello": "add_urls"}
+def add_urls(URL:str):
+    loader = WebBaseLoader(URL)
+    docs = loader.load()
+    docments = RecursiveCharacterTextSplitter(
+        chunk_size=800,
+        chunk_overlap=50,
+    ).split_documents(docs)
+    #引入向量数据库
+    qdrant = Qdrant.from_documents(
+        docments,
+        OpenAIEmbeddings(model="text-embedding-3-small"),
+        path="D:/2.study/Ai-Agent/Chapter8/local_qdrant",
+        collection_name="local_documents",
+    )
+    print("向量数据库创建完成")
+    print(qdrant.collection_name)
+    return {"ok": "添加成功！"}
 
 @app.post("/add_pdfs")
 def add_pdfs():
