@@ -8,9 +8,11 @@
 - Loader 各种学习资料等
 - 语音带情绪实时输出
 ![对话效果](/imgs/chat.png)
-​<audio id="audio" src="/Chapter8/nohappy.mp3">
+<audio controls>
+    <source src="/Chapter8/nohappy.mp3" type="audio/mpeg">
 </audio>
-​<audio id="audio" src="/Chapter8/算命先手出生年月.mp3">
+<audio controls>
+    <source src="/Chapter8/算命先手出生年月.mp3" type="audio/mpeg">
 </audio>
 # 控制台调试追踪LangChain
 ![调试](/imgs/langchain_track.png)
