@@ -44,7 +44,7 @@ async def check_audio(message,audio_path):
         if os.path.exists(audio_path):
             with open(audio_path, 'rb') as f:
                 bot.send_audio(message.chat.id, f)
-            os.remove(audio_path)
+            # os.remove(audio_path)
             break
         else:
             print("waiting",audio_path)
