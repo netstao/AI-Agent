@@ -41,13 +41,13 @@ def echo_all(message):
 
 async def check_audio(message,audio_path):
     while True:
-        if os.path.exists('../'+audio_path):
+        if os.path.exists(audio_path):
             with open(audio_path, 'rb') as f:
                 bot.send_audio(message.chat.id, f)
             os.remove(audio_path)
             break
         else:
-            print("waiting")
+            print("waiting",audio_path)
             await asyncio.sleep(1) #使用asyncio.sleep(1)来等待1秒
 
 bot.infinity_polling()
