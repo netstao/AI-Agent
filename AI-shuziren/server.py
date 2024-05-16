@@ -15,10 +15,10 @@ from langchain_community.utilities import SerpAPIWrapper
 from dotenv import load_dotenv
 load_dotenv()
 
-from urllib.parse import quote
-password = os.getenv('REDIS_PASSWD')
-encoded_password = quote(password, safe="")
-REDIS_URL = 'redis://:{}@192.168.3.16:6380/0'.format(encoded_password)
+# from urllib.parse import quote
+# password = os.getenv('REDIS_PASSWD')
+# encoded_password = quote(password, safe="")
+REDIS_URL = 'redis://localhost:6379/0'
 
 app = FastAPI()
     

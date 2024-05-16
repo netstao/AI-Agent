@@ -2,10 +2,10 @@
 FROM ubuntu:latest
 
 #更改Ubantu的源为阿里云的源
-RUN sed -i 's@archive.ubuntu.com/@/mirrors.aliyun.com/@g' /etc/apt/sources.list && apt-get update && apt-get install -y coturn python3 python3-pip redis-server && rm -rf /var/lib/apt/lists/*
+RUN sed -i 's/http:\/\/cn.archive.ubuntu.com/https:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list && cat  /etc/apt/sources.list && apt-get update && apt-get install -y coturn python3 python3-pip redis-server && rm -rf /var/lib/apt/lists/*
 
 #升级pip并安装FastAPI 
-RUN  pip3 install fastapi uvicorn langchain_core langchain_openai langchain langchain_community openai redis google-search-results
+RUN  pip3 install fastapi uvicorn langchain_core langchain_openai langchain langchain_community openai redis google-search-results --break-system-packages
 
 #设置Coturn的配置文件
 COPY turnserver.conf /etc/turnserver.conf

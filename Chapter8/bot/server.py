@@ -221,7 +221,7 @@ class Master:
             </voice>
         </speak>"""
         #发送请求
-        response = requests.post("https://southeastasia.tts.speech.microsoft.com/cognitiveservices/v1",headers=headers,data=body.encode("utf-8"))
+        response = requests.post("https://eastus.tts.speech.microsoft.com/cognitiveservices/v1",headers=headers,data=body.encode("utf-8"))
         print("response:",response)
         if response.status_code == 200:
             with open(f"{uid}.mp3","wb") as f:

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My avatar</title>
+    <title>我是您的AI小助理</title>
     <style>
         video {
             background: #222;
@@ -18,8 +18,8 @@
     <script>
         var SpeechSDK;
         var peerConnection;
-        var cogSvcRegin ="westus2";
-        var subscriptionKey = "f5e43ff";
+        var cogSvcRegin ="eastus";
+        var subscriptionKey = "33660f8640074f648a05dd6d29ccecb7";
         var speakerHandel = function(avatarSynthesizer,msg,qingxu){
             var yinse = document.getElementById("voiceSelect").value;
             var spokenSsml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='zh-CN'>
@@ -50,7 +50,7 @@
             var chatText = chatInput.value;
             console.log("输入的文本："+chatText);
             var xhr = new XMLHttpRequest();
-            xhr.open("POST",`http://0.0.0.0:8000/chat?query=${chatText}`);
+            xhr.open("POST",`http://localhost:8000/chat?query=${chatText}`);
             xhr.addEventListener("readystatechange",function(){
                 if(this.readyState === 4){
                     var responseData = JSON.parse(this.responseText);
@@ -76,6 +76,7 @@
             xhr.addEventListener("readystatechange",function(){
                 if (this.readyState === 4){
                     var responseData = JSON.parse(this.responseText);
+                    console.log(responseData,'responseData')
                     var iceServerUrl = responseData.Urls[0]
                     var iceServerUsername = responseData.Username;
                     var iceServerCredential = responseData.Password;
@@ -93,28 +94,29 @@
                             }
                         ]
                     });
-                //抓取webtrc
-                peerConnection.ontrack = function(event){
-                    if(event.track.kind === "video"){
-                        console.log("avatar video track received");
-                        var videoElement = document.createElement("video");
-                        videoElement.srcObject = event.streams[0];
-                        videoElement.autoplay = true;
-                        videoElement.id = "videoPlayer";
-                        videoElement.muted = true;
-                        videoElement.playsInline = true;
-                        document.body.appendChild(videoElement);
-                    }
+                    //抓取webtrc
+                    peerConnection.ontrack = function(event){
+                        console.log('event',event)
+                        if(event.track.kind === "video"){
+                            console.log("avatar video track received");
+                            var videoElement = document.createElement("video");
+                            videoElement.srcObject = event.streams[0];
+                            videoElement.autoplay = true;
+                            videoElement.id = "videoPlayer";
+                            videoElement.muted = true;
+                            videoElement.playsInline = true;
+                            document.body.appendChild(videoElement);
+                        }
 
-                    if(event.track.kind==="audio"){
-                        console.log("avatar audio track received");
-                        var  audioElement = document.createElement("audio");
-                        audioElement.srcObject = event.streams[0];
-                        audioElement.autoplay = true;
-                        audioElement.id = "audioPlayer";
-                        audioElement.muted = true;
-                        document.body.appendChild(audioElement);
-                    }
+                        if(event.track.kind==="audio"){
+                            console.log("avatar audio track received");
+                            var  audioElement = document.createElement("audio");
+                            audioElement.srcObject = event.streams[0];
+                            audioElement.autoplay = true;
+                            audioElement.id = "audioPlayer";
+                            audioElement.muted = true;
+                            document.body.appendChild(audioElement);
+                        }
                 }
                 //webtrc连接状态
                 peerConnection.oniceconnectionstatechange = function(){
