@@ -6,7 +6,11 @@
 - 人物设定 算命大师
 - Tools链 Search 本地向量库, 八字测算
 - Loader 各种学习资料等
-[对话语言实时播报](imgs/对话效果.png)
+- 语音带情绪实时输出
+![对话效果](/imgs/对话效果.png)
+# 控制台调试追踪LangChain
+![调试](/imgs/langchain_track.png)
+![调试2](/imgs/langchain_track1.png)
 
 
 # Chain 各种链
