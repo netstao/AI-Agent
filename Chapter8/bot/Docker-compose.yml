@@ -1,0 +1,18 @@
+version: '3'
+services:
+
+  redis-server:
+    image: redis:latest
+    command: redis-server --requirepass 1234567
+    volumes:  # 添加这一行
+      - redis_data:/data  # 添加这一行
+        
+  ai-server:
+    build: ./
+    ports:
+      - "9000:9000"
+    environment:
+      - REDIS_URL=redis://:1234567@redis-server:6379
+ 
+volumes:
+  redis_data: 
