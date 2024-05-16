@@ -18,8 +18,8 @@
     <script>
         var SpeechSDK;
         var peerConnection;
-        var cogSvcRegin ="eastus";
-        var subscriptionKey = "33660f8640074f648a05dd6d29ccecb7";
+        var cogSvcRegion ="southeastasia";
+        var subscriptionKey = "ae7091c856";
         var speakerHandel = function(avatarSynthesizer,msg,qingxu){
             var yinse = document.getElementById("voiceSelect").value;
             var spokenSsml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='zh-CN'>
@@ -61,7 +61,7 @@
             xhr.send();
         }
         document.addEventListener("DOMContentLoaded",function(){
-            var speechConfing =  SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey,cogSvcRegin);
+            var speechConfing =  SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey,cogSvcRegion);
             //设置发音人
             speechConfing.speechSynthesisVoiceName = "zh-CN-XiaoxiaoNeural";
             var videoFormat = new SpeechSDK.AvatarVideoFormat();
@@ -71,7 +71,7 @@
                 videoFormat,
             )
             var xhr = new XMLHttpRequest();
-            xhr.open("GET",`https://${cogSvcRegin}.tts.speech.microsoft.com/cognitiveservices/avatar/relay/token/v1`)
+            xhr.open("GET",`https://${cogSvcRegion}.tts.speech.microsoft.com/cognitiveservices/avatar/relay/token/v1`)
             xhr.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
             xhr.addEventListener("readystatechange",function(){
                 if (this.readyState === 4){
@@ -85,6 +85,9 @@
                     console.log("ice server url: "+iceServerUrl);
                     console.log("ice server username: "+iceServerUsername);
                     console.log("ice server credential: "+iceServerCredential);
+                    // iceServerUrl = "turn:localhost:3478";
+                    // iceServerUsername="tomie"
+                    // iceServerCredential="tomie"
                     peerConnection = new RTCPeerConnection({
                         iceServers: [
                             {
@@ -95,6 +98,9 @@
                         ]
                     });
                     //抓取webtrc
+                    peerConnection.onicecandidateerror = function (error) { 
+                        console.log("onicecandidateerror ice candidate error: ", error);
+                    }
                     peerConnection.ontrack = function(event){
                         console.log('event',event)
                         if(event.track.kind === "video"){
