@@ -7,11 +7,11 @@
 - Tools链 Search 本地向量库, 八字测算
 - Loader 各种学习资料等
 - 语音带情绪实时输出
+![对话效果](/imgs/chat.png)
 ​<audio id="audio" src="/Chapter8/nohappy.mp3">
 </audio>
 ​<audio id="audio" src="/Chapter8/算命先手出生年月.mp3">
 </audio>
-![对话效果](/imgs/chat.png)
 # 控制台调试追踪LangChain
 ![调试](/imgs/langchain_track.png)
 ![调试2](/imgs/langchain_track1.png)
