@@ -17,8 +17,8 @@
 - turnServer Redis
 - 实时聚合搜索
 - [对话效果视频](https://player.bilibili.com/player.html?isOutside=true&aid=1904722879&bvid=BV1FS411F75Z&cid=1547826606&p=1)
-- ['效果GIF'](/imgs/tinywow_2024-05-16 21-17-24_56017848.gif)
-<a href="[$2](https://player.bilibili.com/player.html?isOutside=true&aid=1904722879&bvid=BV1FS411F75Z&cid=1547826606&p=1)" target="_blank">对话效果视频</a>
+- [效果GIF](/imgs/tinywow_2024-05-16 21-17-24_56017848.gif)
+<a href="https://player.bilibili.com/player.html?isOutside=true&aid=1904722879&bvid=BV1FS411F75Z&cid=1547826606&p=1" target="_blank">对话效果视频</a>
 
 # 控制台调试追踪LangChain
 ![调试](/imgs/langchain_track.png)
