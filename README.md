@@ -16,7 +16,7 @@
 - 后端Docker FastAPI
 - turnServer Redis
 - 实时聚合搜索
-- [对话效果视频](https://player.bilibili.com/player.html?isOutside=true&aid=1904722879&bvid=BV1FS411F75Z&cid=1547826606&p=1){:target="_blank"}
+- [对话效果视频](https://player.bilibili.com/player.html?isOutside=true&aid=1904722879&bvid=BV1FS411F75Z&cid=1547826606&p=1){target="_blank"}
 
 
 # 控制台调试追踪LangChain
